@@ -102,7 +102,27 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        queue = Queue()
+        queue.enqueue([starting_vertex])
+        # Create a set of traversed vertices
+        visited = set()
+        # While queue is not empty:
+        while queue.size() > 0:
+            # dequeue/pop the first vertex
+            path = queue.dequeue()
+            vertex = path[-1]
+            # if not visited
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
+                # mark as visited
+                visited.add(vertex)
+                # For each edge in the item
+                for next_vert in self.get_neighbors(vertex):
+                    # Copy path to avoid pass by reference bug
+                    new_path = list(path)  # Make a copy of path rather than reference
+                    new_path.append(next_vert)
+                    queue.enqueue(new_path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -118,15 +138,17 @@ class Graph:
         while ss.size() > 0:
             # dequeue/pop the first vertex
             path = ss.pop()
+            vertex = path[-1]
             # if not visited
-            if path not in visited:
-                if path == destination_vertex:
-                    return
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
                 # mark as visited
-                visited.add(path)
-                # push all neightbors
-                for next_vert in self.get_neighbors(path):
-                    new_path = list(path)
+                visited.add(vertex)
+                # For each edge in the item
+                for next_vert in self.get_neighbors(vertex):
+                    # Copy path to avoid pass by reference bug
+                    new_path = list(path)  # Make a copy of path rather than reference
                     new_path.append(next_vert)
                     ss.push(new_path)
 
